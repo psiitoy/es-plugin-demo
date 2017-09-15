@@ -16,17 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sprintdragon.es.plugin.demo;
 
-import org.elasticsearch.common.inject.AbstractModule;
+package org.sprintdragon.elasticsearch.plugins.rest.slowlog;
+
+import org.elasticsearch.plugins.Plugin;
+import org.elasticsearch.rest.RestModule;
 
 /**
- * Created by wangdi on 17-6-20.
+ * Created by lihailong1 on 2017/6/27.
  */
-public class MyModule extends AbstractModule {
+public class SlowLogPlugin extends Plugin {
+
+    private static final String NAME = "slow-log-query";
+
+
     @Override
-    protected void configure() {
-        bind(MyService.class).asEagerSingleton();
+    public String name() {
+        return NAME;
     }
 
+    @Override
+    public String description() {
+        return "Query slow log on data node";
+    }
+
+    public void onModule(RestModule restModule) {
+        restModule.addRestAction(RestSlowLogQueryAction.class);
+    }
 }

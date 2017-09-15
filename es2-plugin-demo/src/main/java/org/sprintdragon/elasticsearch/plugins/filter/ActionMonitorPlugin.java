@@ -16,32 +16,40 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sprintdragon.es.plugin.demo;
 
+package org.sprintdragon.elasticsearch.plugins.filter;
+
+import org.elasticsearch.action.ActionModule;
 import org.elasticsearch.common.inject.Module;
+import org.elasticsearch.common.logging.ESLogger;
+import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.plugins.Plugin;
 
 import java.util.Collection;
 import java.util.Collections;
 
-/**
- * Created by wangdi on 17-6-20.
- */
-public class MyPlugin extends Plugin {
+public class ActionMonitorPlugin extends Plugin {
+    private final ESLogger log = Loggers.getLogger(ActionMonitorPlugin.class);
 
-    @Override
-    public String name() {
-        return "my-plugin";
+
+    public ActionMonitorPlugin() {
+        log.info("Starting Action Monitor Plugin");
     }
 
-    @Override
-    public String description() {
-        return "my plugin for demo";
+    public void onModule(ActionModule module) {
+        module.registerFilter(ActionMonitorFilter.class);
     }
 
     @Override
     public Collection<Module> nodeModules() {
-        return Collections.<Module>singletonList(new MyModule());
+        return Collections.<Module>singletonList(new ActionMonitorModule());
     }
 
+    public String description() {
+        return "description";
+    }
+
+    public String name() {
+        return "name";
+    }
 }
